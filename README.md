@@ -128,29 +128,21 @@ PARSE v1 supports **Likert-scale evaluation** only. More will be added in the fu
 
 ## Citation
 
-> **Note:** A paper describing PARSE is forthcoming. The BibTeX entry below is a placeholder; final author, institution, and year fields will be filled in upon publication.
-
-```bibtex
-@mastersthesis{parse_TODO,
-  title  = {PARSE Framework: Prompt Alteration Response-Shift Evaluation},
-  author = {TODO},
-  school = {TODO},
-  year   = {TODO},
-  type   = {Master's thesis}
-}
+> **Note:** A paper describing PARSE is forthcoming.
 ```
 
 If you use the bundled **Privacy Bias** dataset, please also cite:
 
 ```bibtex
-@misc{shvartzshnaider2025privacybiaslanguagemodels,
-  title         = {Privacy Bias in Language Models: A Contextual Integrity-based Auditing Metric},
-  author        = {Yan Shvartzshnaider and Vasisht Duddu},
-  year          = {2025},
-  eprint        = {2409.03735},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.LG},
-  url           = {https://arxiv.org/abs/2409.03735}
+@article{article,
+author = {Shvartzshnaider, Yan and Tong, Schrasing and Wies, Thomas and Kift, Paula and Nissenbaum, Helen and Subramanian, Lakshminarayanan and Mittal, Prateek},
+year = {2016},
+month = {09},
+pages = {209-218},
+title = {Learning Privacy Expectations by Crowdsourcing Contextual Informational Norms},
+volume = {4},
+journal = {Proceedings of the AAAI Conference on Human Computation and Crowdsourcing},
+doi = {10.1609/hcomp.v4i1.13271}
 }
 ```
 

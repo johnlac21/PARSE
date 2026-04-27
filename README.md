@@ -49,6 +49,17 @@ npm run dev
 - **LLM integration**: LiteLLM (unified interface for OpenAI, Anthropic, etc.). Responses are parsed by task-specific parsers (Likert, recommendation list, free text).
 - **Data flow**: Projects → Prompts (baseline + variants) → Runs (model + config) → Results (raw_response, parsed_index, is_valid). Analysis endpoints consume results and return difference/completeness/directional bias; export produces LaTeX/CSV/JSON.
 
+## Supported task modalities
+
+PARSE v1 supports **Likert-scale evaluation** only. The framework architecture is modality-agnostic — output parsers for recommendation lists and free-text are scaffolded in `backend/llm/parsers.py` and can be re-enabled by:
+
+1. Adding the desired modality back to the `TaskModality` literal in `backend/models/schemas.py`.
+2. Re-exposing it in the create-project dialog (`frontend/src/components/create-project-dialog.tsx`).
+3. Extending the runner's storage logic in `backend/llm/runner.py` to persist modality-specific parser fields.
+4. Defining appropriate analysis metrics for the modality (the current Difference / Directional Bias analyses assume Likert numerical responses).
+
+See the [Roadmap](#roadmap) for planned multi-modality support.
+
 ## Grammar Features
 
 **189 features** total, aligned with the Ziems Multi-Value paper (eWAVE-style; Tables 7–18). Metadata in `shared/grammar_features.json` (project root); registry loads from there. All **189** have real transforms; for each feature, `apply_grammar(example_std, feature_id)` equals the documented `example_var`. All **189** applicability checks detect their `example_std` as applicable (detection correctness). See `context/CONTEXT.md` § Grammar features and `docs/ZIEMS_MULTIVALUE_MAPPING.md`. Rebuild: `python scripts/build_grammar_features_full.py`. The official 189 are the code-implemented set (excludes plural_preposed, plural_postposed, bare_past_tense_2; includes fixin_future, got, ass_pronoun).
@@ -120,3 +131,7 @@ If you use this tool in your research, please cite:
 ```
 
 Adjust the entry as needed for your thesis or paper format.
+
+## Roadmap
+
+- **Multi-modality analysis (recommendation lists, free text)**: Re-expose non-Likert modalities in the API and UI; wire scaffolded parsers end-to-end with modality-specific metrics.

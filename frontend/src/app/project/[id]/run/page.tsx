@@ -46,13 +46,8 @@ const PROVIDERS = [
   { value: "custom", label: "Custom" },
 ] as const;
 
-const DEFAULT_SYSTEM_PROMPTS: Record<string, string> = {
-  likert:
-    "You are evaluating the acceptability of social actions. Rate on a scale of 1-5 where 1 is 'strongly unacceptable' and 5 is 'strongly acceptable'. Respond with ONLY the number.",
-  recommendation_list:
-    "You are a movie recommendation system. Recommend exactly 10 movies. List one per line.",
-  free_text: "",
-};
+const DEFAULT_LIKERT_SYSTEM_PROMPT =
+  "You are evaluating the acceptability of social actions. Rate on a scale of 1-5 where 1 is 'strongly unacceptable' and 5 is 'strongly acceptable'. Respond with ONLY the number.";
 
 interface ModelConfigRow {
   id: string;
@@ -77,7 +72,17 @@ export default function RunPage() {
   const updateRunProgress = useProjectStore((s) => s.updateRunProgress);
 
   const [modelOptions, setModelOptions] = React.useState<ModelOption[]>([]);
-  const [modelConfigs, setModelConfigs] = React.useState<ModelConfigRow[]>([]);
+  const [modelConfigs, setModelConfigs] = React.useState<ModelConfigRow[]>(
+    () => [
+      {
+        id: crypto.randomUUID(),
+        provider: "openai",
+        modelId: "gpt-4o-mini",
+        apiKey: "",
+        baseUrl: "",
+      },
+    ]
+  );
   const [systemPrompt, setSystemPrompt] = React.useState("");
   const [temperature, setTemperature] = React.useState(0);
   const [maxTokens, setMaxTokens] = React.useState(150);
@@ -90,9 +95,6 @@ export default function RunPage() {
   const [cancelRunId, setCancelRunId] = React.useState<string | null>(null);
   const [isLaunching, setIsLaunching] = React.useState(false);
 
-  const defaultSystemPrompt =
-    project?.task_modality != null ? DEFAULT_SYSTEM_PROMPTS[project.task_modality] ?? "" : "";
-
   const activeRuns = React.useMemo(
     () => runs.filter((r) => activeRunIds.includes(r.id)),
     [runs, activeRunIds]
@@ -101,10 +103,6 @@ export default function RunPage() {
     () => runs.filter((r) => !activeRunIds.includes(r.id)),
     [runs, activeRunIds]
   );
-
-  React.useEffect(() => {
-    if (!systemPrompt && defaultSystemPrompt) setSystemPrompt(defaultSystemPrompt);
-  }, [defaultSystemPrompt, systemPrompt]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -210,12 +208,6 @@ export default function RunPage() {
       setIsLaunching(false);
     }
   }, [launchMode, launchingIndex, modelConfigs, startRun]);
-
-  React.useEffect(() => {
-    if (modelConfigs.length === 0) {
-      addModelConfig();
-    }
-  }, [addModelConfig, modelConfigs.length]);
 
   const runningRunIds = activeRuns.filter(
     (r) => r.status === "running" || r.status === "pending"
@@ -481,17 +473,21 @@ export default function RunPage() {
 
           {/* System Prompt */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="space-y-2">
               <Label>System Prompt</Label>
-              {defaultSystemPrompt && (
-                <button
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  Use a preset, or write your own:
+                </span>
+                <Button
                   type="button"
-                  className="text-xs text-primary hover:underline"
-                  onClick={() => setSystemPrompt(defaultSystemPrompt)}
+                  size="sm"
+                  variant="default"
+                  onClick={() => setSystemPrompt(DEFAULT_LIKERT_SYSTEM_PROMPT)}
                 >
-                  Reset to default
-                </button>
-              )}
+                  Privacy Bias (Likert)
+                </Button>
+              </div>
             </div>
             <Textarea
               className="min-h-[120px] font-mono text-sm"

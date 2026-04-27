@@ -92,6 +92,8 @@ class LikertParser(OutputParser):
         return labels.get(idx, "unknown")
 
 
+# TODO(v2): Wire up to user-selectable modality. Currently
+# scaffolded but unreachable — only "likert" is exposed in the API.
 class RecommendationListParser(OutputParser):
     """
     Parses movie/item recommendation lists.
@@ -114,6 +116,8 @@ class RecommendationListParser(OutputParser):
         }
 
 
+# TODO(v2): Wire up to user-selectable modality. Currently
+# scaffolded but unreachable — only "likert" is exposed in the API.
 class FreeTextParser(OutputParser):
     """For open-ended responses — minimal parsing, stores raw text."""
 
@@ -143,6 +147,9 @@ class FreeTextParser(OutputParser):
         return any(re.search(p, text, re.IGNORECASE) for p in refusal_patterns)
 
 
+# NOTE: Only "likert" is currently exposed via the API. The other
+# parsers remain registered for forward compatibility — see the
+# README "Roadmap" section.
 def get_parser(task_modality: str) -> OutputParser:
     """
     Return the OutputParser for the given task modality.

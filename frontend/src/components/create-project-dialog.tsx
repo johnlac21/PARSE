@@ -14,19 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-const TASK_MODALITY_OPTIONS = [
-  { value: "likert", label: "Likert Scale (1-5)" },
-  { value: "recommendation_list", label: "Recommendation List" },
-  { value: "free_text", label: "Free Text / Open-ended" },
-] as const;
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -41,7 +28,6 @@ export function CreateProjectDialog({
 }: CreateProjectDialogProps) {
   const router = useRouter();
   const [name, setName] = React.useState("");
-  const [taskModality, setTaskModality] = React.useState<string>("likert");
   const [creating, setCreating] = React.useState(false);
 
   const handleCreate = async () => {
@@ -49,10 +35,9 @@ export function CreateProjectDialog({
     if (!trimmed) return;
     setCreating(true);
     try {
-      const project = await api.createProject(trimmed, taskModality);
+      const project = await api.createProject(trimmed, "likert");
       onOpenChange(false);
       setName("");
-      setTaskModality("likert");
       onCreated?.();
       router.push(`/project/${project.id}/configure`);
     } finally {
@@ -81,19 +66,10 @@ export function CreateProjectDialog({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="task-modality">Task Modality</Label>
-            <Select value={taskModality} onValueChange={setTaskModality}>
-              <SelectTrigger id="task-modality">
-                <SelectValue placeholder="Select modality" />
-              </SelectTrigger>
-              <SelectContent>
-                {TASK_MODALITY_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Label>Task Modality</Label>
+            <p className="text-sm text-muted-foreground">
+              Likert Scale (1–5). Other modalities coming in a future release.
+            </p>
           </div>
         </div>
         <DialogFooter>

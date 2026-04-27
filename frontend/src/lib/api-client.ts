@@ -128,7 +128,7 @@ class ApiClient {
 
   async loadDefaultDataset(
     projectId: string,
-    dataset: 'movie_prompts' | 'privacy_bias'
+    dataset: 'privacy_bias'
   ): Promise<{ prompts_loaded: number; columns_detected: string[]; sample: Record<string, unknown>[] }> {
     return this.fetch<{
       prompts_loaded: number;

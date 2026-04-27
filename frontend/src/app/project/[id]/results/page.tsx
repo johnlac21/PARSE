@@ -9,8 +9,6 @@ import { DifferenceTable, flattenDifference } from "@/components/analysis/differ
 import { DirectionalBiasTable, flattenDirectionalBias } from "@/components/analysis/directional-bias-table";
 import { CompletenessTable, flattenCompleteness } from "@/components/analysis/completeness-table";
 import { RawDataTable } from "@/components/analysis/raw-data-table";
-import { HeatmapChart } from "@/components/analysis/heatmap-chart";
-import { DifferenceBarChart } from "@/components/analysis/bar-chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -37,23 +35,22 @@ export default function ResultsPage() {
     Record<string, Record<string, unknown>>
   >({});
   const [directionalLoading, setDirectionalLoading] = React.useState(false);
-  const [visualizationModel, setVisualizationModel] = React.useState<string | null>(null);
 
   const projectId = project?.id ?? null;
   const selectedRunIdsSet = React.useMemo(() => new Set(selectedRunIds), [selectedRunIds]);
-  const selectedIdsArray = selectedRunIds;
 
   const completedRuns = React.useMemo(
     () => runs.filter((r) => r.status === "completed"),
     [runs]
   );
 
-  // When there are completed runs and none selected, auto-select them so data loads immediately
-  React.useEffect(() => {
-    if (completedRuns.length > 0 && selectedRunIds.length === 0) {
-      setSelectedRuns(completedRuns.map((r) => r.id));
-    }
-  }, [completedRuns.length, selectedRunIds.length, setSelectedRuns, completedRuns]);
+  const effectiveRunIds = React.useMemo(
+    () =>
+      selectedRunIds.length > 0
+        ? selectedRunIds
+        : completedRuns.map((r) => r.id),
+    [selectedRunIds, completedRuns]
+  );
 
   const handleSelectionChange = React.useCallback(
     (ids: Set<string>) => {
@@ -64,47 +61,47 @@ export default function ResultsPage() {
 
   // Fetch completeness when selection changes (for summary stats + table)
   React.useEffect(() => {
-    if (!projectId || selectedIdsArray.length === 0) {
+    if (!projectId || effectiveRunIds.length === 0) {
       setCompletenessData({});
       return;
     }
     setCompletenessLoading(true);
     api
-      .runCompleteness(projectId, selectedIdsArray)
+      .runCompleteness(projectId, effectiveRunIds)
       .then((data) => {
         setCompletenessData(data as Record<string, Record<string, { total: number; valid: number; valid_rate: number }>>);
       })
       .catch(() => setCompletenessData({}))
       .finally(() => setCompletenessLoading(false));
-  }, [projectId, selectedIdsArray.join(",")]);
+  }, [projectId, effectiveRunIds.join(",")]);
 
   // Fetch difference when selection changes
   React.useEffect(() => {
-    if (!projectId || selectedIdsArray.length === 0) {
+    if (!projectId || effectiveRunIds.length === 0) {
       setDifferenceData({});
       return;
     }
     setDifferenceLoading(true);
     api
-      .runDifference(projectId, selectedIdsArray)
+      .runDifference(projectId, effectiveRunIds)
       .then(setDifferenceData)
       .catch(() => setDifferenceData({}))
       .finally(() => setDifferenceLoading(false));
-  }, [projectId, selectedIdsArray.join(",")]);
+  }, [projectId, effectiveRunIds.join(",")]);
 
   // Fetch directional bias when selection changes
   React.useEffect(() => {
-    if (!projectId || selectedIdsArray.length === 0) {
+    if (!projectId || effectiveRunIds.length === 0) {
       setDirectionalData({});
       return;
     }
     setDirectionalLoading(true);
     api
-      .runDirectionalBias(projectId, selectedIdsArray)
+      .runDirectionalBias(projectId, effectiveRunIds)
       .then(setDirectionalData)
       .catch(() => setDirectionalData({}))
       .finally(() => setDirectionalLoading(false));
-  }, [projectId, selectedIdsArray.join(",")]);
+  }, [projectId, effectiveRunIds.join(",")]);
 
   const completenessRows = React.useMemo(
     () => flattenCompleteness(completenessData as Parameters<typeof flattenCompleteness>[0]),
@@ -190,11 +187,16 @@ export default function ResultsPage() {
 
   return (
     <div className="space-y-6">
-      <RunSelector
-        runs={runs}
-        selectedRunIds={selectedRunIdsSet}
-        onSelectionChange={handleSelectionChange}
-      />
+      <div className="space-y-2">
+        <p className="text-xs text-muted-foreground">
+          All completed runs are included by default. Select specific runs to filter.
+        </p>
+        <RunSelector
+          runs={runs}
+          selectedRunIds={selectedRunIdsSet}
+          onSelectionChange={handleSelectionChange}
+        />
+      </div>
       <SummaryCards stats={summaryStats} />
 
       <Tabs defaultValue="completeness" className="space-y-4">
@@ -202,7 +204,6 @@ export default function ResultsPage() {
           <TabsTrigger value="completeness">Completeness</TabsTrigger>
           <TabsTrigger value="difference">Difference</TabsTrigger>
           <TabsTrigger value="directional">Directional Bias</TabsTrigger>
-          <TabsTrigger value="visualizations">Visualizations</TabsTrigger>
           <TabsTrigger value="raw">Raw Data</TabsTrigger>
         </TabsList>
 
@@ -211,7 +212,7 @@ export default function ResultsPage() {
             rows={completenessRows}
             loading={completenessLoading}
             projectId={projectId ?? undefined}
-            runIds={selectedIdsArray}
+            runIds={effectiveRunIds}
           />
         </TabsContent>
 
@@ -220,7 +221,7 @@ export default function ResultsPage() {
             rows={differenceRows}
             loading={differenceLoading}
             projectId={projectId ?? undefined}
-            runIds={selectedIdsArray}
+            runIds={effectiveRunIds}
           />
         </TabsContent>
 
@@ -229,38 +230,14 @@ export default function ResultsPage() {
             rows={directionalRows}
             loading={directionalLoading}
             projectId={projectId ?? undefined}
-            runIds={selectedIdsArray}
+            runIds={effectiveRunIds}
           />
-        </TabsContent>
-
-        <TabsContent value="visualizations" className="space-y-6">
-          <HeatmapChart
-            differenceRows={differenceRows}
-            directionalRows={directionalRows}
-            completenessRows={completenessRows}
-            loading={
-              differenceLoading ||
-              directionalLoading ||
-              completenessLoading
-            }
-          />
-          <div>
-            <h3 className="mb-2 text-sm font-medium">
-              Difference by variant (select model)
-            </h3>
-            <DifferenceBarChart
-              rows={differenceRows}
-              selectedModel={visualizationModel}
-              onModelChange={setVisualizationModel}
-              loading={differenceLoading}
-            />
-          </div>
         </TabsContent>
 
         <TabsContent value="raw" className="space-y-4">
           <RawDataTable
             projectId={project.id}
-            selectedRunIds={selectedIdsArray}
+            selectedRunIds={effectiveRunIds}
             variantOptions={Array.from(
               new Set(completenessRows.map((r) => r.variant))
             ).sort()}

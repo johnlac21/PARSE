@@ -246,7 +246,6 @@ export default function ConfigurePage() {
               )}
               <CsvUpload
                 projectId={projectId}
-                taskModality={project.task_modality}
                 onSuccess={handleUploadSuccess}
               />
             </div>

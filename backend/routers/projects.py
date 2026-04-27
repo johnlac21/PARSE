@@ -190,7 +190,6 @@ def _get_project_or_404(db: Session, project_id: str) -> Project:
 # Bundled default CSVs live under <backend package>/prompts/ (parent of routers/ is backend root)
 _BACKEND_ROOT = Path(__file__).resolve().parent.parent
 _DEFAULT_DATASET_FILES: dict[str, str] = {
-    "movie_prompts": "Movie_Prompts.csv",
     "privacy_bias": "Privacy_Bias.csv",
 }
 
@@ -317,7 +316,7 @@ def upload_default_dataset(
     if body.dataset not in _DEFAULT_DATASET_FILES:
         raise HTTPException(
             status_code=400,
-            detail="Unknown dataset. Use 'movie_prompts' or 'privacy_bias'.",
+            detail="Unknown dataset. Use 'privacy_bias'.",
         )
     filename = _DEFAULT_DATASET_FILES[body.dataset]
     path = _BACKEND_ROOT / "prompts" / filename

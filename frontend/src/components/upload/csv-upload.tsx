@@ -31,10 +31,9 @@ export interface CsvUploadProps {
     sample: Record<string, unknown>[];
   }) => void;
   className?: string;
-  taskModality?: string;
 }
 
-export function CsvUpload({ projectId, onSuccess, className, taskModality }: CsvUploadProps) {
+export function CsvUpload({ projectId, onSuccess, className }: CsvUploadProps) {
   const [isDragging, setIsDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [uploading, setUploading] = React.useState(false);
@@ -50,20 +49,15 @@ export function CsvUpload({ projectId, onSuccess, className, taskModality }: Csv
 
   const busy = uploading || loadingDefault;
 
-  const isRec = taskModality === "recommendation_list";
-  const isLikert = taskModality === "likert";
-  const movieButtonVariant: "default" | "secondary" = isRec ? "default" : "secondary";
-  const privacyButtonVariant: "default" | "secondary" = isLikert ? "default" : "secondary";
-
   const loadBundled = React.useCallback(
-    async (dataset: "movie_prompts" | "privacy_bias") => {
+    async () => {
       setError(null);
       setResult(null);
       setShowMapper(false);
       setFile(null);
       setLoadingDefault(true);
       try {
-        const res = await api.loadDefaultDataset(projectId, dataset);
+        const res = await api.loadDefaultDataset(projectId, "privacy_bias");
         setResult(res);
         if (res.prompts_loaded > 0) {
           onSuccess(res);
@@ -232,20 +226,10 @@ export function CsvUpload({ projectId, onSuccess, className, taskModality }: Csv
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
           <Button
             type="button"
-            variant={movieButtonVariant}
+            variant="default"
             disabled={busy}
             onClick={() => {
-              void loadBundled("movie_prompts");
-            }}
-          >
-            Load Movie Prompts (200 film recommendation prompts)
-          </Button>
-          <Button
-            type="button"
-            variant={privacyButtonVariant}
-            disabled={busy}
-            onClick={() => {
-              void loadBundled("privacy_bias");
+              void loadBundled();
             }}
           >
             Load Privacy Bias (200 CI vignettes)

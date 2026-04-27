@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, Minus } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AnalysisResult } from "@/lib/types";
 import { ExportButtons, type ExportTableType } from "@/components/analysis/export-buttons";
@@ -46,19 +46,24 @@ function DirectionCell({ direction }: { direction: string }) {
   const d = (direction || "").toLowerCase();
   if (d === "higher")
     return (
-      <span className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400">
-        <ArrowUp className="h-4 w-4" /> ↑
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+        <ArrowUp className="h-3.5 w-3.5" />
+        more acceptable
       </span>
     );
   if (d === "lower")
     return (
-      <span className="inline-flex items-center gap-1 text-red-600 dark:text-red-400">
-        <ArrowDown className="h-4 w-4" /> ↓
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950/40 dark:text-red-400">
+        <ArrowDown className="h-3.5 w-3.5" />
+        less acceptable
       </span>
     );
   return (
-    <span className="inline-flex items-center gap-1 text-muted-foreground">
-      <Minus className="h-4 w-4" /> —
+    <span className="inline-flex items-center gap-1.5 rounded-md bg-muted/60 px-2 py-0.5 text-xs font-medium text-muted-foreground">
+      <span className="tabular-nums" aria-hidden>
+        ≈
+      </span>
+      no shift
     </span>
   );
 }
@@ -143,6 +148,10 @@ export function DirectionalBiasTable({
           </>
         )}
       </div>
+      <p className="text-xs text-muted-foreground">
+        Mean Diff &gt; 0: variant rated as MORE acceptable than the SAE baseline. Mean
+        Diff &lt; 0: LESS acceptable.
+      </p>
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader>

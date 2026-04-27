@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
-TaskModality = Literal["likert", "recommendation_list", "free_text"]
+TaskModality = Literal["likert"]
 
 
 class ProjectCreate(BaseModel):

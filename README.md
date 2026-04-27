@@ -1,4 +1,3 @@
-````markdown
 # PARSE Framework
 
 **A framework to evaluate linguistic and perturbation bias in LLMs.**
@@ -178,4 +177,3 @@ If you use the bundled **Privacy Bias** dataset, please also cite:
 ## License
 
 PARSE is released under the MIT License. See [LICENSE](LICENSE) for details.
-````

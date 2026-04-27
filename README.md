@@ -8,25 +8,25 @@
 
 ## What is PARSE?
 
-Large language models are sensitive to surface-level changes in how prompts are written. A grammatical reordering, a typo, or a dialect substitution can shift a model's output in ways that have nothing to do with the user's intent — and these shifts often correlate with demographic and linguistic background. **PARSE (Prompt Alteration Response-Shift Evaluation)** is a research framework for systematically measuring those shifts.
+Large language models are sensitive to surface-level changes in how prompts are written. A grammatical reordering, a typo, or a dialect substitution can shift a model's output in ways that have nothing to do with the user's intent. **PARSE (Prompt Alteration Response-Shift Evaluation)** is a research framework for systematically measuring those shifts.
 
-Given a set of baseline prompts, PARSE generates linguistic variants (grammar perturbations from 189 features in the Ziems Multi-Value paper, six classes of typographical noise, and LLM-rewritten dialect variants), runs them against one or more language models, and produces statistical analyses of how outputs differ from baseline. The goal is to give researchers a reproducible, configurable way to audit LLM robustness across the kinds of language variation real users actually produce.
+Given a set of baseline prompts, PARSE generates linguistic and typographical variants (grammar perturbations from 189 features in the Ziems Multi-Value paper, six classes of typographical noise, and LLM-rewritten dialect variants), runs them against one or more language models, and produces statistical analyses of how outputs differ from baseline. The goal is to give researchers a reproducible, configurable way to audit LLM robustness across the kinds of language variation real users actually produce.
 
-<!-- TODO: insert results page screenshot here. Caption: "PARSE results page: directional bias analysis showing how grammar perturbations shift model responses on the Privacy Bias dataset." -->
+![PARSE results](docs/images/results.png)
 
 ---
 
 ## Features
 
 - Upload baseline prompts (CSV/JSONL) or load bundled sample datasets
-- Generate **189 grammar variants** from the Ziems Multi-Value paper (eWAVE-style features) with applicability checking
+- Generate up to **189 grammar variants** from the eWAVE-style features with applicability checking
 - Generate **6 types of typographical perturbations** with configurable intensity
 - Generate **dialect variants** via LLM rewriting (AAVE, Gen Z, Mandarin-influenced English, and more)
 - Query multiple LLMs in parallel through a unified interface (OpenAI, Anthropic, Gemini, Ollama, custom endpoints)
 - Statistical analysis: linear probability model differences, directional bias, completeness rates
 - Export tables as LaTeX, CSV, or JSON for direct inclusion in papers
 
-<!-- TODO: insert configure page screenshot here. Caption: "Configure page: select grammar features and view applicability against your prompts." -->
+![PARSE configure](docs/images/configure.png)
 
 ---
 
@@ -72,8 +72,6 @@ Open http://localhost:3000 to use the app.
 PARSE ships with one bundled sample dataset to support reproducible experimentation:
 
 - **`Privacy_Bias.csv`** — 200 contextual integrity vignettes drawn from Shvartzshnaider et al.'s privacy norms research. Used as the privacy task evaluation in the PARSE thesis.
-
-A second file, `Movie_Prompts.csv` (200 film recommendation prompts authored for the PARSE thesis), is included in the repository for future re-enablement once recommendation-list analysis is implemented (see [Supported task modalities](#supported-task-modalities)).
 
 If you use the Privacy Bias dataset, please cite the original work (see [Citation](#citation)).
 
@@ -124,23 +122,7 @@ Word-level and character-level application probabilities are independently confi
 
 ## Supported Task Modalities
 
-PARSE v1 supports **Likert-scale evaluation** only. The framework architecture is modality-agnostic — output parsers for recommendation lists and free-text responses are scaffolded in `backend/llm/parsers.py` for future releases. Re-enabling those modalities requires:
-
-1. Restoring the modality to the `TaskModality` literal in `backend/models/schemas.py`.
-2. Re-exposing it in the create-project dialog.
-3. Extending the runner's storage logic to persist modality-specific parser fields.
-4. Defining appropriate analysis metrics (the current Difference and Directional Bias analyses assume Likert numerical responses).
-
----
-
-## Testing
-
-```bash
-cd backend
-pytest tests/ -v
-```
-
-Grammar generalization tests (`backend/tests/test_grammar_generalization.py`) verify that applicability and transforms generalize to lexical variants of canonical examples and don't over-detect on decoy sentences.
+PARSE v1 supports **Likert-scale evaluation** only. More will be added in the future.
 
 ---
 

@@ -62,6 +62,12 @@ class MapColumnsRequest(BaseModel):
     metadata_columns: List[str] = Field(default_factory=list)
 
 
+class DefaultDatasetUploadRequest(BaseModel):
+    """Request to load a bundled default prompt CSV (see POST .../upload/default)."""
+
+    dataset: str
+
+
 class PromptResponse(BaseModel):
     """Single prompt in list/detail."""
 

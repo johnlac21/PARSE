@@ -9,7 +9,7 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, FileSpreadsheet, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -229,7 +229,7 @@ export default function ConfigurePage() {
         <CardHeader>
           <CardTitle>Prompts</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Upload a CSV or JSONL file with prompt IDs and prompt text. Columns can be mapped if auto-detection fails.
+            Load a sample dataset to get started, or upload your own CSV/JSONL with prompt IDs and prompt text.
           </p>
         </CardHeader>
         <CardContent>
@@ -244,17 +244,9 @@ export default function ConfigurePage() {
                   Cancel
                 </Button>
               )}
-              {!hasPrompts && (
-                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border bg-muted/20 py-8 px-4 text-center">
-                  <FileSpreadsheet className="h-12 w-12 text-muted-foreground mb-3" aria-hidden />
-                  <p className="text-sm font-medium text-foreground">Upload a CSV to get started</p>
-                  <p className="mt-1 text-xs text-muted-foreground max-w-sm">
-                    Drop a .csv or .jsonl file with prompt text (and optional prompt_id, variant columns).
-                  </p>
-                </div>
-              )}
               <CsvUpload
                 projectId={projectId}
+                taskModality={project.task_modality}
                 onSuccess={handleUploadSuccess}
               />
             </div>

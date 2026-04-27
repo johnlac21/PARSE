@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { api, apiBaseUrl } from "@/lib/api-client";
 import { ColumnMapper, type ColumnMappingResult } from "@/components/upload/column-mapper";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -30,12 +31,14 @@ export interface CsvUploadProps {
     sample: Record<string, unknown>[];
   }) => void;
   className?: string;
+  taskModality?: string;
 }
 
-export function CsvUpload({ projectId, onSuccess, className }: CsvUploadProps) {
+export function CsvUpload({ projectId, onSuccess, className, taskModality }: CsvUploadProps) {
   const [isDragging, setIsDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [uploading, setUploading] = React.useState(false);
+  const [loadingDefault, setLoadingDefault] = React.useState(false);
   const [remapping, setRemapping] = React.useState(false);
   const [file, setFile] = React.useState<File | null>(null);
   const [result, setResult] = React.useState<{
@@ -45,10 +48,44 @@ export function CsvUpload({ projectId, onSuccess, className }: CsvUploadProps) {
   } | null>(null);
   const [showMapper, setShowMapper] = React.useState(false);
 
-  const needsMapping =
-    result &&
-    result.prompts_loaded === 0 &&
-    result.columns_detected.length > 0;
+  const busy = uploading || loadingDefault;
+
+  const isRec = taskModality === "recommendation_list";
+  const isLikert = taskModality === "likert";
+  const movieButtonVariant: "default" | "secondary" = isRec ? "default" : "secondary";
+  const privacyButtonVariant: "default" | "secondary" = isLikert ? "default" : "secondary";
+
+  const loadBundled = React.useCallback(
+    async (dataset: "movie_prompts" | "privacy_bias") => {
+      setError(null);
+      setResult(null);
+      setShowMapper(false);
+      setFile(null);
+      setLoadingDefault(true);
+      try {
+        const res = await api.loadDefaultDataset(projectId, dataset);
+        setResult(res);
+        if (res.prompts_loaded > 0) {
+          onSuccess(res);
+        } else if (res.columns_detected.length > 0) {
+          setShowMapper(true);
+        }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "Load failed";
+        if (msg === "Failed to fetch") {
+          const fullMsg = `Could not reach the server at ${apiBaseUrl}. Check: (1) Backend is running (e.g. uvicorn in the backend folder). (2) NEXT_PUBLIC_API_URL in frontend .env is correct. (3) In DevTools → Network, see if the request is blocked or CORS.`;
+          setError(fullMsg);
+          toast.error(fullMsg);
+        } else {
+          setError(msg);
+          toast.error(msg);
+        }
+      } finally {
+        setLoadingDefault(false);
+      }
+    },
+    [projectId, onSuccess]
+  );
 
   const handleFiles = React.useCallback(
     async (files: FileList | null) => {
@@ -86,7 +123,7 @@ export function CsvUpload({ projectId, onSuccess, className }: CsvUploadProps) {
         setUploading(false);
       }
     },
-    [projectId]
+    [projectId, onSuccess]
   );
 
   const handleMap = React.useCallback(
@@ -188,49 +225,89 @@ export function CsvUpload({ projectId, onSuccess, className }: CsvUploadProps) {
     );
   }
 
+  // Buttons and "or" come first in DOM order so they are the first focusable / visual upload affordances; dropzone follows.
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30 p-12 transition-colors",
-        isDragging && "border-primary bg-muted/50",
-        className
-      )}
-      onDragOver={(e) => {
-        e.preventDefault();
-        setIsDragging(true);
-      }}
-      onDragLeave={() => setIsDragging(false)}
-      onDrop={(e) => {
-        e.preventDefault();
-        setIsDragging(false);
-        handleFiles(e.dataTransfer.files);
-      }}
-    >
-      <input
-        type="file"
-        accept={ACCEPT}
-        className="hidden"
-        id="csv-upload-input"
-        onChange={(e) => handleFiles(e.target.files)}
-        disabled={uploading}
-      />
-      <label
-        htmlFor="csv-upload-input"
-        className="flex cursor-pointer flex-col items-center gap-2"
+    <div className={cn("w-full space-y-4", className)}>
+      <div className="mx-auto w-full max-w-2xl space-y-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+          <Button
+            type="button"
+            variant={movieButtonVariant}
+            disabled={busy}
+            onClick={() => {
+              void loadBundled("movie_prompts");
+            }}
+          >
+            Load Movie Prompts (200 film recommendation prompts)
+          </Button>
+          <Button
+            type="button"
+            variant={privacyButtonVariant}
+            disabled={busy}
+            onClick={() => {
+              void loadBundled("privacy_bias");
+            }}
+          >
+            Load Privacy Bias (200 CI vignettes)
+          </Button>
+        </div>
+        {loadingDefault && (
+          <p className="text-center text-sm text-muted-foreground">Loading…</p>
+        )}
+        <div
+          className="flex items-center gap-3"
+          aria-hidden="true"
+        >
+          <div className="h-px flex-1 bg-border" />
+          <span className="shrink-0 text-xs text-muted-foreground">or</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+      </div>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30 p-12 transition-colors",
+          isDragging && "border-primary bg-muted/50",
+        )}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setIsDragging(false);
+          handleFiles(e.dataTransfer.files);
+        }}
       >
-        <Upload className="h-10 w-10 text-muted-foreground" />
-        <span className="text-sm font-medium text-foreground">
-          Drop CSV or JSONL file here, or click to browse
-        </span>
-      </label>
-      {file && uploading && (
-        <p className="mt-2 text-sm text-muted-foreground">
-          {file.name} ({(file.size / 1024).toFixed(1)} KB) — uploading…
-        </p>
-      )}
-      {error && (
-        <p className="mt-2 text-sm text-destructive">{error}</p>
-      )}
+        <input
+          type="file"
+          accept={ACCEPT}
+          className="hidden"
+          id="csv-upload-input"
+          onChange={(e) => handleFiles(e.target.files)}
+          disabled={busy}
+        />
+        <label
+          htmlFor="csv-upload-input"
+          className={cn(
+            "flex flex-col items-center gap-2",
+            busy ? "cursor-not-allowed opacity-60" : "cursor-pointer",
+          )}
+        >
+          <Upload className="h-10 w-10 text-muted-foreground" />
+          <span className="text-sm font-medium text-foreground">
+            Drop CSV or JSONL file here, or click to browse
+          </span>
+        </label>
+        {file && uploading && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            {file.name} ({(file.size / 1024).toFixed(1)} KB) — uploading…
+          </p>
+        )}
+        {error && (
+          <p className="mt-2 text-sm text-destructive">{error}</p>
+        )}
+      </div>
     </div>
   );
 }

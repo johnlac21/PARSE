@@ -5,6 +5,7 @@ CRUD endpoints for projects.
 import io
 import json
 import logging
+from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
@@ -15,6 +16,7 @@ from sqlalchemy.orm import Session
 
 from db import Project, Prompt, Result, Run, UploadStaging, get_db
 from models.schemas import (
+    DefaultDatasetUploadRequest,
     MapColumnsRequest,
     PaginatedPromptsResponse,
     ProjectCreate,
@@ -185,6 +187,75 @@ def _get_project_or_404(db: Session, project_id: str) -> Project:
     return project
 
 
+# Bundled default CSVs live under <backend package>/prompts/ (parent of routers/ is backend root)
+_BACKEND_ROOT = Path(__file__).resolve().parent.parent
+_DEFAULT_DATASET_FILES: dict[str, str] = {
+    "movie_prompts": "Movie_Prompts.csv",
+    "privacy_bias": "Privacy_Bias.csv",
+}
+
+
+def _ingest_rows(db: Session, project_id: str, rows: list[dict], columns: list) -> UploadResponse:
+    """
+    Store rows in upload staging, auto-detect columns, and build Prompt rows when text column is found.
+    Used by file upload and bundled default CSV endpoints.
+    """
+    # Clear existing staging and prompts (and dependent runs/results) for this project
+    run_ids = [r.id for r in db.query(Run.id).filter(Run.project_id == project_id).all()]
+    if run_ids:
+        db.execute(delete(Result).where(Result.run_id.in_(run_ids)))
+    db.execute(delete(Run).where(Run.project_id == project_id))
+    db.execute(delete(Prompt).where(Prompt.project_id == project_id))
+    db.execute(delete(UploadStaging).where(UploadStaging.project_id == project_id))
+    for i, row in enumerate(rows):
+        db.add(UploadStaging(project_id=project_id, row_index=i, data=dict(row)))
+    db.commit()
+
+    prompt_id_col, prompt_text_col, variant_col = _detect_columns(columns)
+    metadata_columns = [c for c in columns if c not in KNOWN_COLUMNS]
+
+    if not prompt_text_col:
+        return UploadResponse(
+            prompts_loaded=0,
+            columns_detected=list(columns),
+            sample=rows[:5],
+        )
+
+    # Build prompts from staging (reload from DB to keep one source of truth)
+    db.execute(delete(Prompt).where(Prompt.project_id == project_id))
+    staging_rows = (
+        db.query(UploadStaging)
+        .filter(UploadStaging.project_id == project_id)
+        .order_by(UploadStaging.row_index)
+        .all()
+    )
+    loaded = 0
+    for i, sr in enumerate(staging_rows):
+        row = sr.data
+        prompt_data = _row_to_prompt_data(row, prompt_id_col, prompt_text_col, variant_col, metadata_columns)
+        if not prompt_data["prompt_text"]:
+            continue
+        if not prompt_data["prompt_id"]:
+            prompt_data["prompt_id"] = str(i + 1)
+        db.add(
+            Prompt(
+                project_id=project_id,
+                prompt_id=prompt_data["prompt_id"],
+                prompt_text=prompt_data["prompt_text"],
+                variant=prompt_data["variant"],
+                metadata_=prompt_data["metadata"] or None,
+            )
+        )
+        loaded += 1
+
+    db.commit()
+    return UploadResponse(
+        prompts_loaded=loaded,
+        columns_detected=list(columns),
+        sample=rows[:5],
+    )
+
+
 @router.get("/{project_id}", response_model=ProjectResponse)
 def get_project(project_id: str, db: Session = Depends(get_db)):
     """Get a project by ID with prompt_count and run_count."""
@@ -232,62 +303,36 @@ async def upload_prompts(
     rows, columns = _rows_from_upload(content, file.filename or "")
     if not rows:
         raise HTTPException(status_code=400, detail="No rows found in file")
+    return _ingest_rows(db, project_id, rows, columns)
 
-    # Clear existing staging and prompts (and dependent runs/results) for this project
-    run_ids = [r.id for r in db.query(Run.id).filter(Run.project_id == project_id).all()]
-    if run_ids:
-        db.execute(delete(Result).where(Result.run_id.in_(run_ids)))
-    db.execute(delete(Run).where(Run.project_id == project_id))
-    db.execute(delete(Prompt).where(Prompt.project_id == project_id))
-    db.execute(delete(UploadStaging).where(UploadStaging.project_id == project_id))
-    for i, row in enumerate(rows):
-        db.add(UploadStaging(project_id=project_id, row_index=i, data=dict(row)))
-    db.commit()
 
-    prompt_id_col, prompt_text_col, variant_col = _detect_columns(columns)
-    metadata_columns = [c for c in columns if c not in KNOWN_COLUMNS]
-
-    if not prompt_text_col:
-        # Return success with 0 loaded so frontend can show column mapping UI
-        return UploadResponse(
-            prompts_loaded=0,
-            columns_detected=list(columns),
-            sample=rows[:5],
+@router.post("/{project_id}/upload/default", response_model=UploadResponse)
+def upload_default_dataset(
+    project_id: str,
+    body: DefaultDatasetUploadRequest,
+    db: Session = Depends(get_db),
+):
+    """Load a bundled default CSV from backend/prompts/. Same ingest path as /upload."""
+    _get_project_or_404(db, project_id)
+    if body.dataset not in _DEFAULT_DATASET_FILES:
+        raise HTTPException(
+            status_code=400,
+            detail="Unknown dataset. Use 'movie_prompts' or 'privacy_bias'.",
         )
-
-    # Build prompts from staging (reload from DB to keep one source of truth)
-    db.execute(delete(Prompt).where(Prompt.project_id == project_id))
-    staging_rows = (
-        db.query(UploadStaging)
-        .filter(UploadStaging.project_id == project_id)
-        .order_by(UploadStaging.row_index)
-        .all()
-    )
-    loaded = 0
-    for i, sr in enumerate(staging_rows):
-        row = sr.data
-        prompt_data = _row_to_prompt_data(row, prompt_id_col, prompt_text_col, variant_col, metadata_columns)
-        if not prompt_data["prompt_text"]:
-            continue
-        if not prompt_data["prompt_id"]:
-            prompt_data["prompt_id"] = str(i + 1)
-        db.add(
-            Prompt(
-                project_id=project_id,
-                prompt_id=prompt_data["prompt_id"],
-                prompt_text=prompt_data["prompt_text"],
-                variant=prompt_data["variant"],
-                metadata_=prompt_data["metadata"] or None,
-            )
+    filename = _DEFAULT_DATASET_FILES[body.dataset]
+    path = _BACKEND_ROOT / "prompts" / filename
+    if not path.is_file():
+        raise HTTPException(
+            status_code=500,
+            detail=f"Bundled default dataset file is missing: prompts/{filename}",
         )
-        loaded += 1
-
-    db.commit()
-    return UploadResponse(
-        prompts_loaded=loaded,
-        columns_detected=list(columns),
-        sample=rows[:5],
-    )
+    content = path.read_bytes()
+    if not content:
+        raise HTTPException(status_code=400, detail="Empty file")
+    rows, columns = _rows_from_upload(content, filename)
+    if not rows:
+        raise HTTPException(status_code=400, detail="No rows found in file")
+    return _ingest_rows(db, project_id, rows, columns)
 
 
 @router.post("/{project_id}/upload/map-columns", response_model=UploadResponse)

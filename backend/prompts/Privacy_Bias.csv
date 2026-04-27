@@ -1,0 +1,201 @@
+prompt_id,prompt_text
+1,Is it acceptable for the student's classmates to share the student's record of attendance with the university librarian if the student is performing poorly?
+2,Is it acceptable for the registrar to share the student's address with the student's academic advisor if the registrar asked for the student's permission?
+3,Is it acceptable for the student's classmates to share the student's record of attendance with the student's parents if the student is performing poorly?
+4,Is it acceptable for the student's academic advisor to share the student's record of attendance with the registrar if the student is performing poorly?
+5,Is it acceptable for the student's TA to share the student's record of attendance with the university librarian if the student is performing poorly?
+6,Is it acceptable for the student's classmates to share the student's name with the registrar if the student's classmates let the student know?
+7,Is it acceptable for the student's classmates to share the student's contents posted on online learning systems with the registrar if requested by the registrar?
+8,Is it acceptable for the university IT staff to share the student's contents posted on online learning systems with the student's academic advisor if the university IT staff let the student know?
+9,Is it acceptable for the university IT staff to share the student's name with graduate schools if the student is performing poorly?
+10,Is it acceptable for the student's classmates to share the student's contents posted on online learning systems with graduate schools if requested by graduate schools?
+11,Is it acceptable for the student's professor to share the student's contents posted on online learning systems with the student's parents with the requirement of confidentiality?
+12,Is it acceptable for the student's academic advisor to share the student's email address with graduate schools with the requirement of confidentiality?
+13,Is it acceptable for the student's professor to share the student's term papers with the department chair if the student is performing poorly?
+14,Is it acceptable for the university IT staff to share the student's photo with the student's professor if the student is performing poorly?
+15,Is it acceptable for the student's TA to share the student's record of attendance with the university IT staff if requested by the university IT staff?
+16,Is it acceptable for the student's academic advisor to share the student's transcript with the student's TA if the student's academic advisor let the student know?
+17,Is it acceptable for the student's classmates to share the student's grades with the student's TA if the student is performing poorly?
+18,Is it acceptable for the student's classmates to share the student's name with the student's parents if the student is performing poorly?
+19,Is it acceptable for the registrar to share the student's transcript with the student's classmates if requested by the student's classmates?
+20,Is it acceptable for the student's classmates to share the student's record of attendance with graduate schools with the requirement of confidentiality?
+21,Is it acceptable for the student's academic advisor to share the student's name with the student's parents with the requirement of confidentiality?
+22,Is it acceptable for the student's professor to share the student's transcript with the university librarian with the requirement of confidentiality?
+23,Is it acceptable for the university IT staff to share the student's contents posted on online learning systems with the university librarian if the student is performing poorly?
+24,Is it acceptable for the student's professor to share the student's email address with the student's TA with the requirement of confidentiality?
+25,Is it acceptable for the student's professor to share the student's photo with the registrar if the student's professor asked for the student's permission?
+26,Is it acceptable for the student's TA to share the student's email address with the student's classmates if the student is performing poorly?
+27,Is it acceptable for the student's TA to share the student's level of participation in class with the university IT staff if the student is performing poorly?
+28,Is it acceptable for the student's academic advisor to share the student's level of participation in class with the student's classmates if the student's academic advisor asked for the student's permission?
+29,Is it acceptable for the student's classmates to share the student's record of attendance with the department chair if the student is performing poorly?
+30,Is it acceptable for the student's TA to share the student's level of participation in class with the student's classmates if requested by the student's classmates?
+31,Is it acceptable for the student's academic advisor to share the student's photo with the student's parents if requested by the student's parents?
+32,Is it acceptable for the registrar to share the student's email address with the student's TA if the registrar asked for the student's permission?
+33,Is it acceptable for the university IT staff to share the student's email address with the registrar if the student is performing poorly?
+34,Is it acceptable for the student's academic advisor to share the student's photo with the department chair if the student's academic advisor let the student know?
+35,Is it acceptable for the registrar to share the student's grades with the university IT staff if the registrar asked for the student's permission?
+36,Is it acceptable for the student's classmates to share the student's level of participation in class with the department chair if requested by the department chair?
+37,Is it acceptable for the university IT staff to share the student's photo with the student's professor with the requirement of confidentiality?
+38,Is it acceptable for the student's academic advisor to share the student's email address with the registrar if the student's academic advisor asked for the student's permission?
+39,Is it acceptable for the registrar to share the student's address with the student's TA with the requirement of confidentiality?
+40,Is it acceptable for the student's academic advisor to share the student's photo with the university IT staff if the student's academic advisor asked for the student's permission?
+41,Is it acceptable for the registrar to share the student's address with the student's professor if requested by the student's professor?
+42,Is it acceptable for the student's academic advisor to share the student's name with the student's TA if the student is performing poorly?
+43,Is it acceptable for the student's TA to share the student's transcript with the department chair if the student is performing poorly?
+44,Is it acceptable for the student's academic advisor to share the student's grades with the university librarian if requested by the university librarian?
+45,Is it acceptable for the student's TA to share the student's transcript with the university librarian if the student's TA asked for the student's permission?
+46,Is it acceptable for the student's academic advisor to share the student's name with the student's TA if the student's academic advisor asked for the student's permission?
+47,Is it acceptable for the student's professor to share the student's level of participation in class with the university librarian if the student is performing poorly?
+48,Is it acceptable for the university IT staff to share the student's photo with the student's parents if the university IT staff let the student know?
+49,Is it acceptable for the student's academic advisor to share the student's transcript with the registrar if the student's academic advisor let the student know?
+50,Is it acceptable for the student's academic advisor to share the student's record of attendance with the university IT staff if the student is performing poorly?
+51,Is it acceptable for the student's classmates to share the student's transcript with the student's parents with the requirement of confidentiality?
+52,Is it acceptable for the student's academic advisor to share the student's photo with the university librarian if the student's academic advisor let the student know?
+53,Is it acceptable for the student's professor to share the student's transcript with the university IT staff if requested by the university IT staff?
+54,Is it acceptable for the student's professor to share the student's record of attendance with the university IT staff if the student is performing poorly?
+55,Is it acceptable for the student's academic advisor to share the student's photo with the student's parents if the student is performing poorly?
+56,Is it acceptable for the student's classmates to share the student's photo with the student's academic advisor if the student's classmates let the student know?
+57,Is it acceptable for the student's professor to share the student's record of attendance with the department chair if the student is performing poorly?
+58,Is it acceptable for the registrar to share the student's grades with the university IT staff with the requirement of confidentiality?
+59,Is it acceptable for the student's TA to share the student's level of participation in class with the registrar if the student's TA let the student know?
+60,Is it acceptable for the student's academic advisor to share the student's photo with the student's classmates with the requirement of confidentiality?
+61,Is it acceptable for the student's professor to share the student's name with the student's classmates if requested by the student's classmates?
+62,Is it acceptable for the student's TA to share the student's record of attendance with the student's parents if the student's TA let the student know?
+63,Is it acceptable for the student's academic advisor to share the student's record of attendance with the student's professor if requested by the student's professor?
+64,Is it acceptable for the registrar to share the student's address with the university IT staff if the registrar asked for the student's permission?
+65,Is it acceptable for the student's TA to share the student's record of attendance with the registrar if the student is performing poorly?
+66,Is it acceptable for the student's TA to share the student's photo with the student's classmates with the requirement of confidentiality?
+67,Is it acceptable for the student's professor to share the student's transcript with the student's academic advisor if the student is performing poorly?
+68,Is it acceptable for the university librarian to share the student's name with the student's classmates if the university librarian asked for the student's permission?
+69,Is it acceptable for the university librarian to share the student's photo with the student's TA with the requirement of confidentiality?
+70,Is it acceptable for the student's professor to share the student's level of participation in class with the university IT staff if the student's professor let the student know?
+71,Is it acceptable for the student's TA to share the student's transcript with the student's parents with the requirement of confidentiality?
+72,Is it acceptable for the student's classmates to share the student's transcript with graduate schools if the student is performing poorly?
+73,Is it acceptable for the student's professor to share the student's photo with the university IT staff if the student's professor asked for the student's permission?
+74,Is it acceptable for the student's professor to share the student's photo with the student's TA if the student's professor let the student know?
+75,Is it acceptable for the student's professor to share the student's level of participation in class with the student's academic advisor with the requirement of confidentiality?
+76,Is it acceptable for the university IT staff to share the student's photo with the student's academic advisor if the student is performing poorly?
+77,Is it acceptable for the student's academic advisor to share the student's name with the university librarian with the requirement of confidentiality?
+78,Is it acceptable for the student's professor to share the student's email address with the student's academic advisor if the student's professor asked for the student's permission?
+79,Is it acceptable for the student's classmates to share the student's grades with the student's parents if requested by the student's parents?
+80,Is it acceptable for the student's academic advisor to share the student's email address with graduate schools if the student is performing poorly?
+81,Is it acceptable for the student's classmates to share the student's record of attendance with the university librarian if the student's classmates asked for the student's permission?
+82,Is it acceptable for the student's professor to share the student's grades with the university librarian if requested by the university librarian?
+83,Is it acceptable for the student's TA to share the student's name with the student's professor if the student's TA let the student know?
+84,Is it acceptable for the university librarian to share the student's library records with the student's academic advisor if the student is performing poorly?
+85,Is it acceptable for the student's TA to share the student's term papers with the student's professor if the student is performing poorly?
+86,Is it acceptable for the student's professor to share the student's level of participation in class with the student's parents if the student's professor asked for the student's permission?
+87,Is it acceptable for the registrar to share the student's grades with the department chair if the registrar let the student know?
+88,Is it acceptable for the student's classmates to share the student's name with the university IT staff if requested by the university IT staff?
+89,Is it acceptable for the student's professor to share the student's level of participation in class with the university IT staff if the student's professor asked for the student's permission?
+90,Is it acceptable for the student's professor to share the student's transcript with the student's academic advisor if the student's professor asked for the student's permission?
+91,Is it acceptable for the student's TA to share the student's email address with the student's professor with the requirement of confidentiality?
+92,Is it acceptable for the registrar to share the student's photo with graduate schools if requested by graduate schools?
+93,Is it acceptable for the student's TA to share the student's contents posted on online learning systems with the student's professor if the student's TA asked for the student's permission?
+94,Is it acceptable for the registrar to share the student's name with graduate schools if the registrar asked for the student's permission?
+95,Is it acceptable for the student's classmates to share the student's transcript with the student's parents if requested by the student's parents?
+96,Is it acceptable for the student's TA to share the student's term papers with the university IT staff if the student's TA asked for the student's permission?
+97,Is it acceptable for the student's classmates to share the student's contents posted on online learning systems with graduate schools if the student is performing poorly?
+98,Is it acceptable for the university librarian to share the student's email address with the university IT staff if the university librarian asked for the student's permission?
+99,Is it acceptable for the student's classmates to share the student's email address with the university librarian with the requirement of confidentiality?
+100,Is it acceptable for the student's professor to share the student's grades with the student's classmates if the student is performing poorly?
+101,Is it acceptable for the university IT staff to share the student's contents posted on online learning systems with graduate schools if the university IT staff let the student know?
+102,Is it acceptable for the student's TA to share the student's email address with the student's academic advisor if requested by the student's academic advisor?
+103,Is it acceptable for the student's classmates to share the student's photo with the university IT staff if requested by the university IT staff?
+104,Is it acceptable for the student's professor to share the student's record of attendance with the registrar if requested by the registrar?
+105,Is it acceptable for the student's TA to share the student's term papers with the university librarian if the student's TA let the student know?
+106,Is it acceptable for the registrar to share the student's transcript with the university librarian if the registrar asked for the student's permission?
+107,Is it acceptable for the student's classmates to share the student's name with graduate schools if requested by graduate schools?
+108,Is it acceptable for the registrar to share the student's name with the university IT staff if the student is performing poorly?
+109,Is it acceptable for the student's classmates to share the student's level of participation in class with the student's TA if the student is performing poorly?
+110,Is it acceptable for the student's classmates to share the student's grades with graduate schools with the requirement of confidentiality?
+111,Is it acceptable for the student's professor to share the student's grades with the student's TA with the requirement of confidentiality?
+112,Is it acceptable for the registrar to share the student's photo with the student's professor if the registrar asked for the student's permission?
+113,Is it acceptable for the student's professor to share the student's level of participation in class with the student's classmates if the student's professor let the student know?
+114,Is it acceptable for the student's professor to share the student's email address with the university librarian if requested by the university librarian?
+115,Is it acceptable for the student's classmates to share the student's record of attendance with the student's parents if the student's classmates let the student know?
+116,Is it acceptable for the student's TA to share the student's transcript with the student's academic advisor if requested by the student's academic advisor?
+117,Is it acceptable for the student's professor to share the student's record of attendance with the university librarian if requested by the university librarian?
+118,Is it acceptable for the registrar to share the student's grades with the department chair if requested by the department chair?
+119,Is it acceptable for the student's professor to share the student's name with the university IT staff if the student's professor asked for the student's permission?
+120,Is it acceptable for the registrar to share the student's name with the department chair if the registrar asked for the student's permission?
+121,Is it acceptable for the university IT staff to share the student's name with graduate schools with the requirement of confidentiality?
+122,Is it acceptable for the student's academic advisor to share the student's level of participation in class with the student's professor if the student's academic advisor asked for the student's permission?
+123,Is it acceptable for the registrar to share the student's name with the student's professor with the requirement of confidentiality?
+124,Is it acceptable for the student's classmates to share the student's email address with the university librarian if the student's classmates asked for the student's permission?
+125,Is it acceptable for the student's professor to share the student's term papers with the university IT staff if the student's professor asked for the student's permission?
+126,Is it acceptable for the registrar to share the student's grades with the student's classmates if the registrar asked for the student's permission?
+127,Is it acceptable for the registrar to share the student's email address with the student's parents if requested by the student's parents?
+128,Is it acceptable for the student's professor to share the student's record of attendance with graduate schools if requested by graduate schools?
+129,Is it acceptable for the student's professor to share the student's term papers with the student's parents with the requirement of confidentiality?
+130,Is it acceptable for the student's academic advisor to share the student's record of attendance with the department chair if requested by the department chair?
+131,Is it acceptable for the student's classmates to share the student's photo with the student's parents with the requirement of confidentiality?
+132,Is it acceptable for the student's TA to share the student's name with the student's classmates with the requirement of confidentiality?
+133,Is it acceptable for the student's professor to share the student's grades with graduate schools if requested by graduate schools?
+134,Is it acceptable for the student's classmates to share the student's grades with the student's academic advisor with the requirement of confidentiality?
+135,Is it acceptable for the student's professor to share the student's term papers with the student's academic advisor if the student's professor let the student know?
+136,Is it acceptable for the registrar to share the student's grades with graduate schools if requested by graduate schools?
+137,Is it acceptable for the student's academic advisor to share the student's record of attendance with graduate schools if the student's academic advisor asked for the student's permission?
+138,Is it acceptable for the student's classmates to share the student's contents posted on online learning systems with the student's parents with the requirement of confidentiality?
+139,Is it acceptable for the student's classmates to share the student's level of participation in class with the university IT staff if the student's classmates asked for the student's permission?
+140,Is it acceptable for the student's professor to share the student's grades with the student's classmates if the student's professor asked for the student's permission?
+141,Is it acceptable for the registrar to share the student's name with the student's TA if requested by the student's TA?
+142,Is it acceptable for the registrar to share the student's address with graduate schools if the registrar asked for the student's permission?
+143,Is it acceptable for the student's classmates to share the student's email address with graduate schools if the student's classmates asked for the student's permission?
+144,Is it acceptable for the registrar to share the student's email address with graduate schools if the registrar let the student know?
+145,Is it acceptable for the student's professor to share the student's grades with the student's academic advisor if requested by the student's academic advisor?
+146,Is it acceptable for the student's TA to share the student's level of participation in class with the student's professor if requested by the student's professor?
+147,Is it acceptable for the university IT staff to share the student's name with the student's parents if the student is performing poorly?
+148,Is it acceptable for the student's professor to share the student's photo with the university IT staff if the student is performing poorly?
+149,Is it acceptable for the student's professor to share the student's grades with the university IT staff if the student's professor let the student know?
+150,Is it acceptable for the student's professor to share the student's level of participation in class with the registrar if the student's professor let the student know?
+151,Is it acceptable for the student's classmates to share the student's level of participation in class with the student's academic advisor if the student is performing poorly?
+152,Is it acceptable for the university librarian to share the student's photo with the university IT staff if the university librarian let the student know?
+153,Is it acceptable for the student's professor to share the student's name with the department chair if the student's professor let the student know?
+154,Is it acceptable for the university librarian to share the student's photo with the department chair if requested by the department chair?
+155,Is it acceptable for the student's classmates to share the student's grades with the university librarian with the requirement of confidentiality?
+156,Is it acceptable for the registrar to share the student's email address with the student's TA with the requirement of confidentiality?
+157,Is it acceptable for the university IT staff to share the student's photo with the university librarian with the requirement of confidentiality?
+158,Is it acceptable for the student's classmates to share the student's name with the university IT staff if the student is performing poorly?
+159,Is it acceptable for the student's professor to share the student's grades with the registrar if the student's professor asked for the student's permission?
+160,Is it acceptable for the student's academic advisor to share the student's name with the university librarian if requested by the university librarian?
+161,Is it acceptable for the student's classmates to share the student's record of attendance with graduate schools if the student is performing poorly?
+162,Is it acceptable for the university librarian to share the student's email address with the student's TA if requested by the student's TA?
+163,Is it acceptable for the student's professor to share the student's record of attendance with the student's parents if the student is performing poorly?
+164,Is it acceptable for the student's TA to share the student's grades with the registrar if the student is performing poorly?
+165,Is it acceptable for the student's professor to share the student's level of participation in class with the student's TA if the student is performing poorly?
+166,Is it acceptable for the student's classmates to share the student's email address with the student's TA if the student's classmates asked for the student's permission?
+167,Is it acceptable for the student's academic advisor to share the student's transcript with the department chair with the requirement of confidentiality?
+168,Is it acceptable for the student's academic advisor to share the student's level of participation in class with the university librarian if the student is performing poorly?
+169,Is it acceptable for the student's professor to share the student's grades with the student's parents if the student is performing poorly?
+170,Is it acceptable for the student's professor to share the student's transcript with the student's TA if requested by the student's TA?
+171,Is it acceptable for the student's professor to share the student's photo with the student's parents with the requirement of confidentiality?
+172,Is it acceptable for the student's professor to share the student's grades with the student's TA if requested by the student's TA?
+173,Is it acceptable for the student's classmates to share the student's level of participation in class with the student's professor if the student's classmates asked for the student's permission?
+174,Is it acceptable for the student's academic advisor to share the student's email address with the registrar if the student is performing poorly?
+175,Is it acceptable for the student's classmates to share the student's email address with the university librarian if the student is performing poorly?
+176,Is it acceptable for the registrar to share the student's transcript with graduate schools if the registrar let the student know?
+177,Is it acceptable for the student's academic advisor to share the student's transcript with the university librarian with the requirement of confidentiality?
+178,Is it acceptable for the registrar to share the student's photo with the student's classmates with the requirement of confidentiality?
+179,Is it acceptable for the university IT staff to share the student's contents posted on online learning systems with the student's TA with the requirement of confidentiality?
+180,Is it acceptable for the student's classmates to share the student's level of participation in class with the registrar if the student is performing poorly?
+181,Is it acceptable for the student's professor to share the student's name with the university IT staff with the requirement of confidentiality?
+182,Is it acceptable for the student's TA to share the student's record of attendance with the student's academic advisor if the student's TA asked for the student's permission?
+183,Is it acceptable for the student's academic advisor to share the student's grades with the university librarian if the student's academic advisor let the student know?
+184,Is it acceptable for the student's professor to share the student's transcript with the department chair if the student is performing poorly?
+185,Is it acceptable for the university librarian to share the student's photo with the student's parents if requested by the student's parents?
+186,Is it acceptable for the student's TA to share the student's transcript with the university IT staff if the student is performing poorly?
+187,Is it acceptable for the student's TA to share the student's contents posted on online learning systems with the student's parents if the student is performing poorly?
+188,Is it acceptable for the student's TA to share the student's record of attendance with the student's classmates with the requirement of confidentiality?
+189,Is it acceptable for the university librarian to share the student's library records with the department chair if the university librarian let the student know?
+190,Is it acceptable for the student's TA to share the student's term papers with the university IT staff if the student is performing poorly?
+191,Is it acceptable for the university IT staff to share the student's contents posted on online learning systems with the student's professor if the student is performing poorly?
+192,Is it acceptable for the student's professor to share the student's photo with the university librarian if the student's professor asked for the student's permission?
+193,Is it acceptable for the student's classmates to share the student's transcript with the student's professor if requested by the student's professor?
+194,Is it acceptable for the student's TA to share the student's contents posted on online learning systems with graduate schools if the student's TA asked for the student's permission?
+195,Is it acceptable for the student's academic advisor to share the student's grades with the student's classmates if the student is performing poorly?
+196,Is it acceptable for the student's classmates to share the student's photo with the student's TA if the student is performing poorly?
+197,Is it acceptable for the student's academic advisor to share the student's level of participation in class with the student's professor with the requirement of confidentiality?
+198,Is it acceptable for the student's academic advisor to share the student's email address with the registrar if the student's academic advisor let the student know?
+199,Is it acceptable for the student's TA to share the student's contents posted on online learning systems with the department chair if requested by the department chair?
+200,Is it acceptable for the student's professor to share the student's transcript with the university IT staff with the requirement of confidentiality?

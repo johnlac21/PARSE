@@ -126,6 +126,20 @@ class ApiClient {
     return res.json() as Promise<{ prompts_loaded: number; columns_detected: string[]; sample: Record<string, unknown>[] }>;
   }
 
+  async loadDefaultDataset(
+    projectId: string,
+    dataset: 'movie_prompts' | 'privacy_bias'
+  ): Promise<{ prompts_loaded: number; columns_detected: string[]; sample: Record<string, unknown>[] }> {
+    return this.fetch<{
+      prompts_loaded: number;
+      columns_detected: string[];
+      sample: Record<string, unknown>[];
+    }>(`/api/projects/${projectId}/upload/default`, {
+      method: 'POST',
+      body: JSON.stringify({ dataset }),
+    });
+  }
+
   async mapColumnsUpload(
     projectId: string,
     mapping: {

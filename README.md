@@ -26,7 +26,7 @@ Given a set of baseline prompts, PARSE generates linguistic and typographical va
 - Statistical analysis: linear probability model differences, directional bias, completeness rates
 - Export tables as LaTeX, CSV, or JSON for direct inclusion in papers
 
-![PARSE configure](docs/images/configure.png)
+![PARSE configure](docs/images/configuration.png)
 
 ---
 

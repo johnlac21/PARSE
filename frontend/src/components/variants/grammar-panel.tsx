@@ -117,6 +117,7 @@ export function GrammarPanel({
   const [searchQuery, setSearchQuery] = React.useState("");
   const [categoryFilter, setCategoryFilter] = React.useState<string>("All");
   const [tierFilter, setTierFilter] = React.useState<string>("all");
+  const [showApplicableOnly, setShowApplicableOnly] = React.useState(true);
   const [localApplicabilityResults, setLocalApplicabilityResults] = React.useState<
     Map<string, ApplicabilityResult>
   >(new Map());
@@ -224,9 +225,21 @@ export function GrammarPanel({
         const tierNum = parseInt(tierFilter, 10);
         if (f.tier !== tierNum) return false;
       }
+      if (showApplicableOnly && scanned && applicabilityResultsMap.size > 0) {
+        const result = applicabilityResultsMap.get(f.id);
+        if (!result || result.total_applicable === 0) return false;
+      }
       return true;
     });
-  }, [features, searchQuery, categoryFilter, tierFilter]);
+  }, [
+    features,
+    searchQuery,
+    categoryFilter,
+    tierFilter,
+    showApplicableOnly,
+    scanned,
+    applicabilityResultsMap,
+  ]);
 
   const toggleFeature = React.useCallback(
     (id: string) => {
@@ -334,6 +347,13 @@ export function GrammarPanel({
               ))}
             </SelectContent>
           </Select>
+          <label className="flex items-center gap-2 h-9 px-3 rounded-md border border-input cursor-pointer text-sm">
+            <Switch
+              checked={showApplicableOnly}
+              onCheckedChange={setShowApplicableOnly}
+            />
+            <span>Applicable only</span>
+          </label>
         </div>
 
         {/* Feature List */}
@@ -347,7 +367,12 @@ export function GrammarPanel({
             )}
             {!featuresLoading && filteredFeatures.length === 0 && (
               <div className="py-12 text-center text-sm text-muted-foreground">
-                No grammar features match your filters.
+                {showApplicableOnly &&
+                !searchQuery.trim() &&
+                categoryFilter === "All" &&
+                tierFilter === "all"
+                  ? "No grammar features apply to your prompts. Toggle off 'Applicable only' to see all features."
+                  : "No grammar features match your filters."}
               </div>
             )}
             {!featuresLoading &&

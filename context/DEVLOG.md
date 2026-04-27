@@ -10,6 +10,58 @@ Changelog of notable changes (agentic session). Use for context when continuing 
 
 ---
 
+## Session (Pre-GitHub cleanup; v1 Likert lockdown)
+
+### Goal
+
+Prepare PARSE for public GitHub release. Surface real bugs uncovered during smoke testing, scope down to one fully working task modality, and update docs.
+
+### Default datasets shipped
+
+- Two bundled CSVs in `backend/prompts/`: `Privacy_Bias.csv` (200 CI vignettes, derived from Shvartzshnaider et al. 2016 HCOMP, released for academic use) and `Movie_Prompts.csv` (200 film recommendation prompts from John's thesis).
+- New backend endpoint `POST /{project_id}/upload/default` reuses the same `_ingest_rows()` helper as the file-upload path.
+- Frontend: preset buttons on configure page; modality-aware default styling.
+
+### v1 lockdown to Likert only
+
+- Recommendation list and free text modalities are scaffolded but not user-selectable. Reasons: (1) recommendation_list analysis needs set-overlap / rank-correlation metrics not currently implemented; (2) doing it properly requires IMDB integration for canonical title matching, out of scope for v1; (3) free_text has the same runner storage gap (see below).
+- `TaskModality` literal restricted to `Literal["likert"]` in `backend/models/schemas.py`. Parsers and `get_parser()` retained.
+- Frontend: create-project dialog shows Likert as the only option; Movie Prompts and Film Recommendations system prompt presets removed; CsvUpload preset buttons collapsed to Privacy Bias only.
+
+### Runner storage gap (documented, deferred)
+
+- Discovered during smoke test: `RecommendationListParser` returns `titles`/`count`, but the runner only writes `parsed_label`/`parsed_index`/`is_valid` to the `Result` table. Recommendation runs persisted nulls for parsed fields even though the parser succeeded.
+- Not fixed in this session because v1 lockdown makes the bug unreachable. When re-enabling other modalities, the fix is either (a) add a `parsed_data` JSON column to `Result` and have the runner serialize all parser-specific fields there, or (b) repurpose existing columns by modality (e.g. `parsed_index` = count, `parsed_label` = JSON-serialized titles for recommendation_list).
+- Recommended approach: option (a). Cleaner, future-proof for additional modalities, single migration touch-point.
+
+### Results page bug fixes
+
+- **First-load shows 0 results**: previous auto-select effect populated the Zustand store via `setSelectedRuns()` on mount, but relied on async store hydration timing. Replaced with derived `effectiveRunIds = selectedRunIds.length > 0 ? selectedRunIds : completedRuns.map(r => r.id)`. Fetch effects now use `effectiveRunIds`. The store value `selectedRunIds` is only set when the user explicitly checks/unchecks runs.
+- **Visualizations tab removed**: heatmap and bar chart components retained in `components/analysis/` (not deleted) for future re-use.
+- **Directional bias clarity**: replaced double-arrow direction cell with colored chips ("more acceptable" green, "less acceptable" red, "no shift" muted). Added caption above table: "Mean Diff > 0: variant rated as MORE acceptable than the SAE baseline. Mean Diff < 0: LESS acceptable."
+
+### Run page bug fix
+
+- **Two default models on load**: previous `useState<ModelConfigRow[]>([])` plus auto-add `useEffect` was vulnerable to React Strict Mode double-invoke (both invocations saw `length === 0` before either state commit landed; both appended). Replaced with a lazy `useState` initializer that creates exactly one default row; auto-add effect deleted.
+
+### Configure page UX
+
+- **Grammar applicability filter**: added "Applicable only" Switch to grammar panel, default `true`. Filter only fires after scan completes (`scanned && applicabilityResultsMap.size > 0`). Empty state distinguishes "no matches" from "filter is hiding everything".
+- **Run page system prompt presets**: replaced "Reset to default" link with explicit preset buttons. Removed auto-fill effect; textarea starts empty with placeholder.
+
+### Files touched (summary)
+
+| Area | Files |
+|------|-------|
+| Default datasets | `backend/routers/projects.py`, `backend/models/schemas.py` (DefaultDatasetUploadRequest), `backend/prompts/Movie_Prompts.csv`, `backend/prompts/Privacy_Bias.csv`, `frontend/src/lib/api-client.ts`, `frontend/src/components/upload/csv-upload.tsx`, `frontend/src/app/project/[id]/configure/page.tsx` |
+| v1 lockdown | `backend/models/schemas.py` (TaskModality literal), `backend/llm/parsers.py` (TODO comments), `frontend/src/components/create-project-dialog.tsx`, `frontend/src/app/project/[id]/run/page.tsx` (DEFAULT_SYSTEM_PROMPTS, presets) |
+| Results page | `frontend/src/app/project/[id]/results/page.tsx` (effectiveRunIds, Visualizations tab removed), `frontend/src/components/analysis/directional-bias-table.tsx` (chips + caption) |
+| Run page | `frontend/src/app/project/[id]/run/page.tsx` (lazy useState initializer) |
+| Configure | `frontend/src/components/variants/grammar-panel.tsx` (applicability filter), `frontend/src/components/upload/csv-upload.tsx` (UI restructure) |
+| Docs | `README.md`, `backend/README.md`, `frontend/README.md`, `context/CONTEXT.md`, `context/DEVLOG.md` (this entry) |
+
+---
+
 ## Session (Grammar: generalization tests + applicability widenings)
 
 - **Generalization test suite**: Added `backend/tests/test_grammar_generalization.py` — template-based lexical variants of `example_std`, detection hit rate ≥70% (features in `DETECTION_THRESHOLD_EXEMPT` excluded when trigger word is in substitution lexicons), rewrite sanity, false positive rate ≤30% on decoys. Fixed seed for CI.

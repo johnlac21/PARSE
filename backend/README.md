@@ -14,6 +14,7 @@ All routes are under `/api/`. Base URL when running locally: `http://localhost:8
 | GET | `/{project_id}` | Get project by id. |
 | DELETE | `/{project_id}` | Delete project (cascades to prompts, runs, results). |
 | POST | `/{project_id}/upload` | Upload CSV/JSONL file. Auto-detects columns or returns sample for column mapping. |
+| POST | `/{project_id}/upload/default` | Load a bundled default prompt CSV (currently only `privacy_bias`). Same ingest path as `/upload`. |
 | POST | `/{project_id}/upload/map-columns` | Apply column mapping to staged upload (prompt_id_column, prompt_text_column, variant_column, metadata_columns). |
 | GET | `/{project_id}/prompts` | Paginated prompts (query: page, per_page). |
 
@@ -86,7 +87,7 @@ Parsers turn raw LLM output into structured fields for storage and analysis (e.g
    - `"your_modality": YourParser()`.
 
 3. **Use the new modality**  
-   - Add the new modality to the `TaskModality` literal in `backend/models/schemas.py` (e.g. `Literal["likert", "recommendation_list", "free_text", "your_modality"]`).
+   - Add the new modality to the `TaskModality` literal in `backend/models/schemas.py`. **Note**: v1 is locked to `Literal["likert"]`. Re-enabling other modalities also requires extending the runner's storage logic (it currently persists only `parsed_label`, `parsed_index`, `is_valid`) and defining appropriate analysis metrics for the modality.
    - Ensure projects can be created with `task_modality="your_modality"` (e.g. in the frontend create-project flow and any validation).
 
 4. **Runner**  

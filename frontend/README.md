@@ -64,13 +64,13 @@ src/
 - **summary-cards**: Total prompts, models, variants, completion rate.
 - **completeness-table**: Valid/total and valid rate per model per variant; uses `api.runCompleteness`.
 - **difference-table**: LPM difference rate, SE, p-value, significance; uses `api.runDifference`; export buttons (LaTeX/CSV/JSON).
-- **directional-bias-table**: Mean difference vs baseline, SE, p-value; uses `api.runDirectionalBias`; export buttons.
-- **heatmap-chart**: Heatmap of difference/directional/completeness by variant and model.
-- **bar-chart** (DifferenceBarChart): Bar chart of difference by variant for a selected model.
+- **directional-bias-table**: Mean difference vs baseline, SE, p-value; uses `api.runDirectionalBias`; export buttons. Direction column uses colored chips (more acceptable / less acceptable / no shift) and a caption: “Mean Diff > 0 = more acceptable than baseline; < 0 = less acceptable.”
+- **heatmap-chart**: Heatmap of difference/directional/completeness by variant and model. (retained but not routed in v1; Visualizations tab was removed in the pre-GitHub cleanup pass)
+- **bar-chart** (DifferenceBarChart): Bar chart of difference by variant for a selected model. (retained but not routed in v1; Visualizations tab was removed in the pre-GitHub cleanup pass)
 - **raw-data-table**: Paginated raw results with filters (run, variant, model); uses `api.getRawResults`.
 - **export-buttons**: Shared export UI (table type + format); calls `api.exportResults` and triggers download.
 
-Data flow: Results page loads completeness, difference, and directional bias in parallel when `projectId` or `selectedRunIds` change. Each table receives flattened rows (from `flattenCompleteness`, `flattenDifference`, `flattenDirectionalBias`) and optional `projectId`/`runIds` for export.
+Data flow: Run selection — the Results page uses a derived `effectiveRunIds` value: if the user has not explicitly selected runs, all completed runs are included by default. The persisted store value `selectedRunIds` is only set when the user explicitly checks/unchecks runs in the selector. The page loads completeness, difference, and directional bias in parallel when `projectId` or `effectiveRunIds` change. Each table receives flattened rows (from `flattenCompleteness`, `flattenDifference`, `flattenDirectionalBias`) and optional `projectId`/`runIds` for export.
 
 ## How to Add a New Analysis View
 

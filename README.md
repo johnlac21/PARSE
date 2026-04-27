@@ -11,7 +11,6 @@ A full-stack web application for generating linguistic prompt variants, querying
 - Query multiple LLMs with all variants
 - Statistical analysis: difference (LPM), directional bias, completeness
 - Export results as LaTeX, CSV, JSON
-- Interactive visualizations
 
 ## Quick Start
 
@@ -46,7 +45,7 @@ npm run dev
 
 - **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind CSS + shadcn/ui. Calls backend REST API; optional SSE for run progress.
 - **Backend**: FastAPI + SQLite (SQLAlchemy) + statsmodels for LPM/directional bias. Routers: projects, variants, runs, analysis, dialect.
-- **LLM integration**: LiteLLM (unified interface for OpenAI, Anthropic, etc.). Responses are parsed by task-specific parsers (Likert, recommendation list, free text).
+- **LLM integration**: LiteLLM (unified interface for OpenAI, Anthropic, etc.). Responses are parsed by task-specific parsers. v1 exposes Likert only; recommendation_list and free_text parsers are scaffolded for future releases.
 - **Data flow**: Projects → Prompts (baseline + variants) → Runs (model + config) → Results (raw_response, parsed_index, is_valid). Analysis endpoints consume results and return difference/completeness/directional bias; export produces LaTeX/CSV/JSON.
 
 ## Supported task modalities
@@ -119,6 +118,8 @@ Grammar generalization tests (`backend/tests/test_grammar_generalization.py`) ch
 ## Citation
 
 If you use this tool in your research, please cite:
+
+> **Note**: A paper describing PARSE is forthcoming. The BibTeX entry below is a placeholder; final author/institution/year fields will be filled in upon publication.
 
 ```bibtex
 @mastersthesis{parse2025,

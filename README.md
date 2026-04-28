@@ -41,7 +41,9 @@ python -m venv venv
 source venv/bin/activate     # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
+```
 
+```bash
 # Frontend (terminal 2)
 cd frontend
 npm install

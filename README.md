@@ -40,7 +40,6 @@ cd backend
 python -m venv venv
 source venv/bin/activate     # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env         # then add your API keys
 uvicorn main:app --reload --port 8000
 
 # Frontend (terminal 2)
@@ -79,7 +78,7 @@ If you use the Privacy Bias dataset, please cite the original work (see [Citatio
 
 ## Grammar Features
 
-**189 features** from the Ziems Multi-Value paper (eWAVE-style; Tables 7–18). Metadata in `shared/grammar_features.json`. All 189 have real string transforms that match their documented `example_var`, and all 189 applicability checks detect their canonical `example_std`. Generalization tests verify that detection and transforms hold up against lexical variants of canonical examples.
+**189 features** from the eWAVE catalog. Metadata in `shared/grammar_features.json`. All 189 have real string transforms that match their documented `example_var`, and all 189 applicability checks detect their canonical `example_std`. 
 
 Sample of implemented features:
 
@@ -129,7 +128,6 @@ PARSE v1 supports **Likert-scale evaluation** only. More will be added in the fu
 ## Citation
 
 > **Note:** A paper describing PARSE is forthcoming.
-```
 
 If you use the bundled **Privacy Bias** dataset, please also cite:
 
